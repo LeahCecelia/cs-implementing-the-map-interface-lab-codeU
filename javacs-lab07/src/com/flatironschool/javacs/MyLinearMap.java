@@ -63,7 +63,12 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 	 * @param target
 	 */
 	private Entry findEntry(Object target) {
-        // TODO: fill this in
+        for (Entry ent : entries ) {
+        		try { if (equals( ent.getKey(), target))
+        			return ent;
+        		} catch (NullPointerException e) {
+        		}
+        }
 		return null;
 	}
 
@@ -98,8 +103,12 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V get(Object key) {
-        // TODO: fill this in.
-		return null;
+		Entry ent = findEntry(key);
+		if (ent == null) {
+			return null;
+		} else {
+			return ent.getValue();
+		}
 	}
 
 	@Override
@@ -118,8 +127,17 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V put(K key, V value) {
-        // TODO: fill this in.
-        return null;
+				V val = null;
+				if (this.containsKey(key)) {
+					Entry ent = this.findEntry(key);
+					val = ent.getValue();
+					ent.setValue(value);
+				}
+				else {
+					Entry ent = new Entry(key, value);
+        	entries.add(ent);
+				}
+    return val;   
 	}
 
 	@Override
@@ -131,8 +149,18 @@ public class MyLinearMap<K, V> implements Map<K, V> {
 
 	@Override
 	public V remove(Object key) {
-        // TODO: fill this in.
-        return null;
+		int index = -1;
+		int i = 0;
+		V val = null;
+		for (Entry e: entries) {
+			if (equals(key, e.getKey())) {
+				index = i;
+				val = e.getValue();
+			}
+			i++;
+		}
+		entries.remove(index);
+		return val;
 	}
 
 	@Override
